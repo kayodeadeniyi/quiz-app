@@ -35,6 +35,7 @@ export default function Round1Screen({ onLogout, darkMode, onToggleDarkMode }: {
   const [autoAdvance, setAutoAdvance] = useState(false);
   const [timeLeft, setTimeLeft] = useState(10);
   const [confetti, setConfetti] = useState(false);
+  const [confettiRecycle, setConfettiRecycle] = useState(true);
   const navigate = useNavigate();
   const playSound = useSound();
 
@@ -94,7 +95,11 @@ export default function Round1Screen({ onLogout, darkMode, onToggleDarkMode }: {
   // Confetti should stop after a few seconds
   useEffect(() => {
     if (confetti) {
-      const t = setTimeout(() => setConfetti(false), 5000);
+      setConfettiRecycle(true);
+      const t = setTimeout(() => {
+        setConfettiRecycle(false);
+        setTimeout(() => setConfetti(false), 2000); // allow last pieces to finish falling
+      }, 4000);
       return () => clearTimeout(t);
     }
   }, [confetti]);
@@ -109,7 +114,7 @@ export default function Round1Screen({ onLogout, darkMode, onToggleDarkMode }: {
         position="relative"
       >
         <QuizAppBar showHome={true} showLogout={true} onHome={() => navigate('/')} onLogout={onLogout} title="Round 1 Summary" />
-        {confetti && <Confetti width={window.innerWidth} height={document.documentElement.scrollHeight} numberOfPieces={400} recycle={false} />}
+        {confetti && <Confetti width={window.innerWidth} height={window.innerHeight} numberOfPieces={400} recycle={confettiRecycle} />}
         <Container maxW="container.2xl" pt={16} pb={10} px={0} minH="80vh" display="flex" alignItems="center" justifyContent="center">
           <MotionBox
             initial={{ opacity: 0, y: 20 }}

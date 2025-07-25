@@ -39,6 +39,7 @@ export default function Round2Screen({ onLogout, darkMode, onToggleDarkMode }: {
   const [lockedAnswer, setLockedAnswer] = useState<string | null>(null);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [confetti, setConfetti] = useState(false);
+  const [confettiRecycle, setConfettiRecycle] = useState(true);
   const navigate = useNavigate();
   const playSound = useSound();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -73,8 +74,12 @@ export default function Round2Screen({ onLogout, darkMode, onToggleDarkMode }: {
       setAnsweredQuestions(prev => new Set([...prev, selectedQuestion]));
     }
     if (selectedAnswer && currentQuestion && selectedAnswer === currentQuestion.answer) {
+      setConfettiRecycle(true);
       setConfetti(true);
-      setTimeout(() => setConfetti(false), 4000);
+      setTimeout(() => {
+        setConfettiRecycle(false);
+        setTimeout(() => setConfetti(false), 2000);
+      }, 4000);
     }
     playSound('reveal');
   };
@@ -172,7 +177,7 @@ export default function Round2Screen({ onLogout, darkMode, onToggleDarkMode }: {
           </ModalHeader>
           <ModalCloseButton size="lg" color="white" top={3} right={3} />
           <ModalBody pb={16} px={16} pt={10} display="flex" flexDirection="column" justifyContent="center" flex="1" minH="60vh">
-            {confetti && <Confetti width={window.innerWidth} height={window.innerHeight} numberOfPieces={300} recycle={false} />}
+            {confetti && <Confetti width={window.innerWidth} height={window.innerHeight} numberOfPieces={300} recycle={confettiRecycle} />}
             {currentQuestion && (
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
                 <VStack spacing={12} align="stretch" minH="40vh">
