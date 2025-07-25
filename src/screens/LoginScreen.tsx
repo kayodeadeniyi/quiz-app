@@ -1,13 +1,44 @@
 import React, { useState } from 'react';
-import { Box, Button, TextField, Typography, Paper, Divider, Fade, useTheme } from '@mui/material';
-import ConventionAppBar from '../components/ConventionAppBar';
+import {
+  Box,
+  Button,
+  Input,
+  Text,
+  VStack,
+  Container,
+  Heading,
+  useColorModeValue,
+  InputGroup,
+  InputRightElement,
+  IconButton,
+  FormControl,
+  FormErrorMessage
+} from '@chakra-ui/react';
+import { motion } from 'framer-motion';
+import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
+import { useBranding } from '../utils/useBranding';
+
+const MotionBox = motion(Box);
+const MotionButton = motion(Button);
 
 const PASSCODE = '1234'; // Easy to customize
 
-export default function LoginScreen({ onLogin, darkMode, onToggleDarkMode }: { onLogin: () => void, darkMode: boolean, onToggleDarkMode: () => void }) {
+export default function LoginScreen({ onLogin, darkMode, onToggleDarkMode }: {
+  onLogin: () => void,
+  darkMode: boolean,
+  onToggleDarkMode: () => void
+}) {
   const [input, setInput] = useState('');
   const [error, setError] = useState('');
-  const theme = useTheme();
+  const [showPassword, setShowPassword] = useState(false);
+  const { conventionName } = useBranding();
+
+  const bgGradient = useColorModeValue(
+    'linear(to-br, blue.50, purple.50)',
+    'linear(to-br, gray.900, blue.900)'
+  );
+  const cardBg = useColorModeValue('white', 'gray.800');
+  const textColor = useColorModeValue('gray.800', 'white');
 
   const handleLogin = () => {
     if (input === PASSCODE) {
@@ -24,68 +55,107 @@ export default function LoginScreen({ onLogin, darkMode, onToggleDarkMode }: { o
     }
   };
 
-  const bgGradient = theme.palette.mode === 'dark'
-    ? 'linear-gradient(135deg, #23272f 0%, #2d3748 100%)'
-    : 'linear-gradient(135deg, #e0e7ff 0%, #f8fafc 100%)';
-  const paperBg = theme.palette.mode === 'dark' ? '#23272f' : '#fff';
-
   return (
-    <Box sx={{ minHeight: '100vh', background: bgGradient }}>
-      <ConventionAppBar showLogout={false} darkMode={darkMode} onToggleDarkMode={onToggleDarkMode} />
-      <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" minHeight="100vh" sx={{ p: 4 }}>
-        <Fade in={true} timeout={600}>
-          <Paper sx={{ p: 8, width: '100%', maxWidth: 440, minHeight: 420, display: 'flex', flexDirection: 'column', alignItems: 'center', borderRadius: 5, boxShadow: 8, mt: 10, background: paperBg }}>
-            <Typography variant="h2" mb={2} align="center" sx={{ fontWeight: 800, color: 'primary.main', letterSpacing: 1 }}>
-              Welcome
-            </Typography>
-            <Typography variant="h6" mb={6} align="center" sx={{ color: 'text.secondary', fontWeight: 400 }}>
-              Enter the passcode to access the event
-            </Typography>
-            <Divider sx={{ width: '100%', mb: 6 }} />
-            <Box sx={{ width: '100%', maxWidth: 340 }}>
-              <TextField
-                fullWidth
-                label="Passcode"
-                type="password"
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyPress={handleKeyPress}
-                error={!!error}
-                helperText={error}
-                sx={{ mb: 4 }}
-                inputProps={{
-                  style: { fontSize: 24, textAlign: 'center' }
-                }}
-                InputLabelProps={{
-                  style: { fontSize: 18 }
-                }}
-              />
-              <Button
-                fullWidth
-                variant="contained"
-                size="large"
-                onClick={handleLogin}
-                sx={{
-                  fontSize: 24,
-                  py: 2,
-                  borderRadius: 3,
-                  boxShadow: 6,
-                  background: 'linear-gradient(90deg, #2563eb 0%, #7c3aed 100%)',
-                  color: '#fff',
-                  transition: 'transform 0.2s, box-shadow 0.2s',
-                  '&:hover': {
-                    transform: 'scale(1.04)',
-                    boxShadow: 12,
-                    background: 'linear-gradient(90deg, #7c3aed 0%, #2563eb 100%)',
-                  }
-                }}
+    <Box
+      minH="100vh"
+      bgGradient={bgGradient}
+      px={4}
+      display="flex"
+      alignItems="center"
+      justifyContent="center"
+    >
+      <Container maxW="container.sm">
+        <MotionBox
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          bg={cardBg}
+          borderRadius="2xl"
+          p={12}
+          boxShadow="2xl"
+          textAlign="center"
+        >
+          <VStack spacing={10}>
+            <MotionBox
+              initial={{ scale: 0.8 }}
+              animate={{ scale: 1 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
+              <Heading
+                size="2xl"
+                bgGradient="linear(to-r, blue.500, purple.500)"
+                bgClip="text"
+                fontWeight="extrabold"
+                letterSpacing="tight"
+                mb={2}
               >
-                Login
-              </Button>
-            </Box>
-          </Paper>
-        </Fade>
-      </Box>
+                {conventionName}
+              </Heading>
+              <Text fontSize="2xl" color={textColor} fontWeight="bold" mb={2}>
+                Welcome
+              </Text>
+              <Box h={2} />
+              <Box w="60px" h="3px" bgGradient="linear(to-r, blue.400, purple.400)" borderRadius="full" mx="auto" mb={2} />
+            </MotionBox>
+
+            <Text fontSize="xl" color={textColor} opacity={0.8}>
+              Enter the passcode to access the event
+            </Text>
+
+            <VStack spacing={6} w="full" maxW="md">
+              <FormControl isInvalid={!!error}>
+                <InputGroup size="lg">
+                  <Input
+                    type={showPassword ? 'text' : 'password'}
+                    placeholder="Enter passcode"
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    onKeyPress={handleKeyPress}
+                    fontSize="xl"
+                    textAlign="center"
+                    borderRadius="xl"
+                    borderWidth="2px"
+                    _focus={{
+                      borderColor: 'blue.500',
+                      boxShadow: '0 0 0 1px var(--chakra-colors-blue-500)',
+                    }}
+                  />
+                  <InputRightElement width="4.5rem">
+                    <IconButton
+                      h="1.75rem"
+                      size="sm"
+                      onClick={() => setShowPassword(!showPassword)}
+                      icon={showPassword ? <ViewOffIcon /> : <ViewIcon />}
+                      aria-label={showPassword ? 'Hide password' : 'Show password'}
+                      variant="ghost"
+                    />
+                  </InputRightElement>
+                </InputGroup>
+                {error && <FormErrorMessage>{error}</FormErrorMessage>}
+              </FormControl>
+
+              <MotionButton
+                size="lg"
+                colorScheme="blue"
+                w="full"
+                h="16"
+                fontSize="xl"
+                fontWeight="bold"
+                borderRadius="xl"
+                boxShadow="lg"
+                whileHover={{
+                  scale: 1.05,
+                  boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)"
+                }}
+                whileTap={{ scale: 0.95 }}
+                onClick={handleLogin}
+              >
+                🔐 Login
+              </MotionButton>
+            </VStack>
+          </VStack>
+        </MotionBox>
+      </Container>
     </Box>
   );
 }

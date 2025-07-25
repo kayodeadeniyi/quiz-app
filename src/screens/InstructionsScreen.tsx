@@ -1,92 +1,115 @@
 import React, { useState } from 'react';
-import { Box, Button, Paper, Typography, Divider, Fade, useTheme } from '@mui/material';
-import LogoutIcon from '@mui/icons-material/Logout';
-import HomeIcon from '@mui/icons-material/Home';
-import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
+import {
+  Box,
+  Button,
+  Text,
+  VStack,
+  Container,
+  Heading,
+  useColorModeValue,
+  Divider,
+  Box as ChakraBox
+} from '@chakra-ui/react';
+import { motion } from 'framer-motion';
 import { useNavigate, useParams } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
-import { useBranding } from '../utils/useBranding';
 import instructionsRound1 from '../config/instructions-round1.md';
 import instructionsRound2 from '../config/instructions-round2.md';
-import ConventionAppBar from '../components/ConventionAppBar';
+import QuizAppBar from '../components/QuizAppBar';
+
+const MotionBox = motion(Box);
+const MotionButton = motion(Button);
 
 const roundToContent: Record<string, string> = {
   round1: instructionsRound1,
   round2: instructionsRound2,
 };
 
-export default function InstructionsScreen({ onLogout, darkMode, onToggleDarkMode }: { onLogout: () => void, darkMode: boolean, onToggleDarkMode: () => void }) {
+export default function InstructionsScreen({ onLogout, darkMode, onToggleDarkMode }: {
+  onLogout: () => void,
+  darkMode: boolean,
+  onToggleDarkMode: () => void
+}) {
   const { round } = useParams();
   const navigate = useNavigate();
   const content = round ? roundToContent[round] : '';
   const [fadeIn, setFadeIn] = useState(true);
-  const theme = useTheme();
+
+  const bgGradient = useColorModeValue(
+    'linear(to-br, blue.50, purple.50)',
+    'linear(to-br, gray.900, blue.900)'
+  );
+  const cardBg = useColorModeValue('white', 'gray.800');
+  const textColor = useColorModeValue('gray.800', 'white');
+
   React.useEffect(() => {
     setFadeIn(false);
     const t = setTimeout(() => setFadeIn(true), 50);
     return () => clearTimeout(t);
   }, [round]);
 
-  const bgGradient = theme.palette.mode === 'dark'
-    ? 'linear-gradient(135deg, #23272f 0%, #2d3748 100%)'
-    : 'linear-gradient(135deg, #f8fafc 0%, #e3f0ff 100%)';
-  const paperBg = theme.palette.mode === 'dark' ? '#23272f' : '#fff';
-
   return (
-    <Box sx={{ minHeight: '100vh', background: bgGradient }}>
-      <ConventionAppBar showHome showLogout onLogout={onLogout} onHome={() => navigate('/')} darkMode={darkMode} onToggleDarkMode={onToggleDarkMode} />
-      <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" minHeight="100vh" sx={{ p: 4 }}>
-        <Fade in={fadeIn} timeout={600}>
-          <Paper sx={{ p: 8, width: '100%', maxWidth: 1200, minHeight: 500, borderRadius: 5, boxShadow: 8, mt: 8, background: paperBg }}>
-            <Divider sx={{ mb: 4 }} />
-            <Box sx={{
-              fontSize: 28,
-              mb: 6,
-              lineHeight: 1.6,
-              '& h1, & h2, & h3, & h4, & h5, & h6': {
-                color: 'primary.main',
-                fontWeight: 600,
-                mb: 2
-              },
-              '& p': {
-                mb: 2
-              },
-              '& ul, & ol': {
-                pl: 4
-              },
-              '& li': {
-                mb: 1
-              }
-            }}>
+    <Box
+      minH="100vh"
+      bgGradient={bgGradient}
+      py={20}
+      px={4}
+      position="relative"
+    >
+      <QuizAppBar showHome={true} showLogout={true} onHome={() => navigate('/')} onLogout={onLogout} title={round === 'round1' ? 'Round 1 Instructions' : 'Round 2 Instructions'} />
+      <Container maxW="container.xl" pt={24} pb={16}>
+        <MotionBox
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          bg={cardBg}
+          borderRadius="2xl"
+          p={{ base: 10, md: 20 }}
+          boxShadow="2xl"
+          textAlign="center"
+          maxW="5xl"
+          mx="auto"
+          position="relative"
+          zIndex={1}
+        >
+          <VStack spacing={10} align="center">
+            <Heading
+              size="2xl"
+              bgGradient="linear(to-r, blue.500, purple.500)"
+              bgClip="text"
+              fontWeight="extrabold"
+              letterSpacing="tight"
+            >
+              Instructions
+            </Heading>
+            <Divider />
+            <Box w="full" textAlign="left" fontSize={{ base: 'xl', md: '2xl' }}>
               <ReactMarkdown>{content}</ReactMarkdown>
             </Box>
-            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-              <Button
-                variant="contained"
-                color="primary"
-                size="large"
-                sx={{
-                  mt: 3,
-                  fontSize: 28,
-                  px: 8,
-                  py: 3,
-                  minWidth: 300,
-                  borderRadius: 3,
-                  boxShadow: 6,
-                  transition: 'transform 0.2s',
-                  '&:hover': {
-                    transform: 'scale(1.04)',
-                    boxShadow: 12
-                  }
+
+            <Box textAlign="center" pt={4}>
+              <MotionButton
+                size="lg"
+                colorScheme="blue"
+                h="16"
+                fontSize="xl"
+                fontWeight="bold"
+                borderRadius="xl"
+                boxShadow="lg"
+                px={12}
+                whileHover={{
+                  scale: 1.05,
+                  boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)"
                 }}
+                whileTap={{ scale: 0.95 }}
                 onClick={() => navigate(round === 'round1' ? '/round1' : '/round2')}
               >
-                Start {round === 'round1' ? 'Round 1' : 'Round 2'}
-              </Button>
+                🚀 Start {round === 'round1' ? 'Round 1' : 'Round 2'}
+              </MotionButton>
             </Box>
-          </Paper>
-        </Fade>
-      </Box>
+          </VStack>
+        </MotionBox>
+      </Container>
     </Box>
   );
 }

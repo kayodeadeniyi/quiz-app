@@ -1,170 +1,351 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import { Box, Button, Typography, Paper, Stack, Fade } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import {
+  Box,
+  Button,
+  Text,
+  VStack,
+  HStack,
+  Container,
+  Heading,
+  useColorModeValue,
+  Progress,
+  Badge,
+  Divider,
+  SimpleGrid
+} from '@chakra-ui/react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { useSound } from '../utils/useSound';
-import ConventionAppBar from '../components/ConventionAppBar';
 import questionsData from '../config/questions-round1.json';
+import { useSound } from '../utils/useSound';
+import Confetti from 'react-confetti';
+import QuizAppBar from '../components/QuizAppBar';
 
-interface Question {
-  question: string;
-  options: Record<string, string>;
-  answer: string;
-}
+const MotionBox = motion(Box);
+const MotionButton = motion(Button);
 
-export default function Round1Screen({ onLogout, darkMode, onToggleDarkMode }: { onLogout: () => void, darkMode: boolean, onToggleDarkMode: () => void }) {
-  const [current, setCurrent] = useState(0);
+const PASSCODE = '1234';
+
+export default function Round1Screen({ onLogout, darkMode, onToggleDarkMode }: {
+  onLogout: () => void,
+  darkMode: boolean,
+  onToggleDarkMode: () => void
+}) {
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [showSummary, setShowSummary] = useState(false);
-  const playSound = useSound();
+  const [autoAdvance, setAutoAdvance] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(10);
+  const [confetti, setConfetti] = useState(false);
   const navigate = useNavigate();
+  const playSound = useSound();
 
-  // Keyboard navigation
+  const bgGradient = useColorModeValue(
+    'linear(to-br, blue.50, purple.50)',
+    'linear(to-br, gray.900, blue.900)'
+  );
+  const cardBg = useColorModeValue('white', 'gray.800');
+  const textColor = useColorModeValue('gray.800', 'white');
+
+  const currentQuestion = questionsData[currentQuestionIndex];
+
   useEffect(() => {
-    const handleKey = (e: KeyboardEvent) => {
-      if (showSummary) return;
-      if (e.key === 'ArrowRight') next();
-      if (e.key === 'ArrowLeft') prev();
-    };
-    window.addEventListener('keydown', handleKey);
-    return () => window.removeEventListener('keydown', handleKey);
-    // eslint-disable-next-line
-  }, [current, showSummary]);
+    if (autoAdvance && timeLeft > 0) {
+      const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
+      return () => clearTimeout(timer);
+    } else if (autoAdvance && timeLeft === 0) {
+      handleNextQuestion();
+    }
+  }, [timeLeft, autoAdvance]);
 
-  const next = useCallback(() => {
-    if (current < questionsData.length - 1) {
-      setCurrent(c => c + 1);
-      playSound('next.mp3');
+  const handleNextQuestion = () => {
+    playSound('next');
+    if (currentQuestionIndex < questionsData.length - 1) {
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
+      setTimeLeft(10);
     } else {
       setShowSummary(true);
-      playSound('next.mp3');
+      setConfetti(true);
     }
-  }, [current, playSound]);
+  };
 
-  const prev = useCallback(() => {
-    if (current > 0) {
-      setCurrent(c => c - 1);
+  const handlePreviousQuestion = () => {
+    playSound('next');
+    if (currentQuestionIndex > 0) {
+      setCurrentQuestionIndex(currentQuestionIndex - 1);
+      setTimeLeft(10);
     }
-  }, [current]);
+  };
 
-  // Animation state
-  const [fadeIn, setFadeIn] = useState(true);
+  const handleKeyPress = (e: KeyboardEvent) => {
+    if (e.key === 'ArrowRight') {
+      handleNextQuestion();
+    } else if (e.key === 'ArrowLeft') {
+      handlePreviousQuestion();
+    } else if (e.key === ' ') {
+      e.preventDefault();
+      setAutoAdvance(!autoAdvance);
+    }
+  };
+
   useEffect(() => {
-    setFadeIn(false);
-    const t = setTimeout(() => setFadeIn(true), 50);
-    return () => clearTimeout(t);
-  }, [current, showSummary]);
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, [currentQuestionIndex, autoAdvance]);
 
-  if (!questionsData.length) {
-    return <Typography>Loading questions...</Typography>;
-  }
+  // Confetti should stop after a few seconds
+  useEffect(() => {
+    if (confetti) {
+      const t = setTimeout(() => setConfetti(false), 5000);
+      return () => clearTimeout(t);
+    }
+  }, [confetti]);
 
   if (showSummary) {
     return (
-      <Box sx={{ minHeight: '100vh', background: 'linear-gradient(135deg, #f8fafc 0%, #e3f0ff 100%)' }}>
-        <ConventionAppBar showHome showLogout onLogout={onLogout} onHome={() => navigate('/')} darkMode={darkMode} onToggleDarkMode={onToggleDarkMode} />
-        <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" minHeight="100vh" sx={{ p: 2 }}>
-          <Fade in={fadeIn} timeout={600}>
-            <Paper sx={{ p: 6, width: '100%', maxWidth: 1400, minHeight: 600, borderRadius: 5, boxShadow: 8, mt: 8 }}>
-              <Typography variant="h2" mb={6} align="center" sx={{ fontWeight: 700, color: 'primary.main' }}>Round 1 Summary</Typography>
-              <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(600px, 1fr))', gap: 4 }}>
-                {questionsData.map((q, i) => (
-                  <Fade in={fadeIn} timeout={600} key={i} style={{ transitionDelay: `${i * 40}ms` }}>
-                    <Box sx={{
-                      p: 4,
-                      border: '2px solid #e0e0e0',
-                      borderRadius: 3,
-                      backgroundColor: '#fafafa',
-                      boxShadow: 2,
-                      transition: 'box-shadow 0.3s',
-                      '&:hover': { boxShadow: 8 }
-                    }}>
-                      <Typography variant="h4" mb={2} sx={{ fontWeight: 600, color: 'primary.main' }}>
-                        <b>Q{i + 1}:</b> {q.question}
-                      </Typography>
-                      <Typography variant="h5" color="success.main" sx={{ fontWeight: 700 }}>
-                        Answer: <b>{q.answer.toUpperCase()}</b> - {q.options[q.answer as keyof typeof q.options]}
-                      </Typography>
-                    </Box>
-                  </Fade>
+      <Box
+        minH="100vh"
+        bgGradient={bgGradient}
+        py={20}
+        px={4}
+        position="relative"
+      >
+        <QuizAppBar showHome={true} showLogout={true} onHome={() => navigate('/')} onLogout={onLogout} title="Round 1 Summary" />
+        {confetti && <Confetti width={window.innerWidth} height={document.documentElement.scrollHeight} numberOfPieces={400} recycle={false} />}
+        <Container maxW="container.2xl" pt={16} pb={10} px={0} minH="80vh" display="flex" alignItems="center" justifyContent="center">
+          <MotionBox
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            bg={cardBg}
+            borderRadius="2xl"
+            p={{ base: 8, md: 16 }}
+            boxShadow="2xl"
+            w="full"
+            minH="80vh"
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            justifyContent="center"
+          >
+            <VStack spacing={8}>
+              <Heading
+                size="2xl"
+                bgGradient="linear(to-r, blue.500, purple.500)"
+                bgClip="text"
+                fontWeight="extrabold"
+                textAlign="center"
+              >
+                Round 1 Complete! 🎉
+              </Heading>
+
+              <Text fontSize="xl" color={textColor} textAlign="center">
+                Here are the correct answers:
+              </Text>
+
+              <SimpleGrid columns={{ base: 1, md: 2, xl: 3 }} spacing={16} w="full">
+                {questionsData.map((q, index) => (
+                  <MotionBox
+                    key={index}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.3, delay: index * 0.05 }}
+                    w="full"
+                    p={12}
+                    bg={useColorModeValue('gray.50', 'gray.700')}
+                    borderRadius="xl"
+                    borderWidth="1px"
+                    minH="72"
+                    display="flex"
+                    flexDirection="column"
+                    justifyContent="flex-start"
+                  >
+                    <VStack align="start" spacing={3}>
+                      <HStack>
+                        <Badge colorScheme="blue" fontSize="md" px={3} py={1}>
+                          Q{index + 1}
+                        </Badge>
+                        <Text fontWeight="bold" fontSize="lg" color={textColor}>
+                          {q.question}
+                        </Text>
+                      </HStack>
+                      <VStack align="stretch" spacing={6} mt={6}>
+                        {Object.entries(q.options).map(([key, value]) => (
+                          <Box
+                            key={key}
+                            p={8}
+                            borderRadius="md"
+                            bg={q.answer === key ? 'green.100' : 'transparent'}
+                            borderWidth={q.answer === key ? '2px' : '1px'}
+                            borderColor={q.answer === key ? 'green.400' : 'gray.200'}
+                            fontWeight={q.answer === key ? 'bold' : 'normal'}
+                            fontSize="2xl"
+                            display="flex"
+                            alignItems="center"
+                            minH="20"
+                          >
+                            <Box as="span" fontWeight="bold" mr={6} fontSize="2xl">
+                              {key.toUpperCase()}
+                            </Box>
+                            <Box flex="1">{value}</Box>
+                            {q.answer === key && (
+                              <Box as="span" color="green.600" fontWeight="bold" ml={6} fontSize="2xl">
+                                ✓ Correct
+                              </Box>
+                            )}
+                          </Box>
+                        ))}
+                      </VStack>
+                    </VStack>
+                  </MotionBox>
                 ))}
-              </Box>
-              <Box sx={{ display: 'flex', justifyContent: 'center', mt: 6 }}>
-                <Button
-                  variant="contained"
-                  size="large"
-                  sx={{ fontSize: 24, px: 6, py: 2, borderRadius: 3, boxShadow: 6, transition: 'transform 0.2s', '&:hover': { transform: 'scale(1.04)', boxShadow: 12 } }}
-                  onClick={() => navigate('/')}
-                >
-                  Back to Home
-                </Button>
-              </Box>
-            </Paper>
-          </Fade>
-        </Box>
+              </SimpleGrid>
+
+              <MotionButton
+                size="lg"
+                colorScheme="blue"
+                onClick={() => navigate('/')}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                🏠 Back to Home
+              </MotionButton>
+            </VStack>
+          </MotionBox>
+        </Container>
       </Box>
     );
   }
 
-  const q = questionsData[current];
-
   return (
-    <Box sx={{ minHeight: '100vh', background: 'linear-gradient(135deg, #f8fafc 0%, #e3f0ff 100%)' }}>
-      <ConventionAppBar showHome showLogout onLogout={onLogout} onHome={() => navigate('/')} darkMode={darkMode} onToggleDarkMode={onToggleDarkMode} />
-      <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" minHeight="100vh" sx={{ p: { xs: 1, md: 2 } }}>
-        <Fade in={fadeIn} timeout={600}>
-          <Paper sx={{ p: { xs: 2, md: 6 }, width: '100%', maxWidth: 1400, minHeight: 500, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', borderRadius: 5, boxShadow: 8, mt: 8 }}>
-            <Typography variant="h3" mb={2} align="center" sx={{ fontWeight: 600, color: 'primary.main', fontSize: { xs: 24, md: 36 } }}>
-              Question {current + 1} of {questionsData.length}
-            </Typography>
-            <Typography variant="h1" mb={4} align="center" sx={{ fontWeight: 700, fontSize: { xs: 28, md: 56 }, lineHeight: 1.2 }}>
-              {q.question}
-            </Typography>
-            <Stack spacing={3} sx={{ width: '100%', maxWidth: 1000 }}>
-              {Object.entries(q.options).map(([key, value], idx) => (
-                <Fade in={fadeIn} timeout={600} key={key} style={{ transitionDelay: `${idx * 40}ms` }}>
-                  <Box sx={{
-                    p: { xs: 2, md: 4 },
-                    border: '3px solid #e0e0e0',
-                    borderRadius: 3,
-                    backgroundColor: '#fafafa',
-                    textAlign: 'center',
-                    transition: 'all 0.3s ease',
-                    boxShadow: 2,
-                    '&:hover': {
-                      borderColor: 'primary.main',
-                      backgroundColor: '#f0f8ff',
-                      transform: 'translateY(-2px) scale(1.03)',
-                      boxShadow: 8
-                    }
-                  }}>
-                    <Typography variant="h3" sx={{ fontWeight: 700, fontSize: { xs: 20, md: 32 } }}>
-                      <b style={{ color: '#1976d2' }}>{key.toUpperCase()}.</b> {value}
-                    </Typography>
-                  </Box>
-                </Fade>
-              ))}
-            </Stack>
-            <Stack direction="row" spacing={6} mt={6} justifyContent="center">
-              <Button
-                onClick={prev}
-                disabled={current === 0}
-                size="large"
-                variant="outlined"
-                sx={{ fontSize: 24, px: 4, py: 1, minWidth: 120, borderRadius: 3, boxShadow: 2, transition: 'transform 0.2s', '&:hover': { transform: 'scale(1.04)', boxShadow: 8 } }}
+    <Box
+      minH="100vh"
+      bgGradient={bgGradient}
+      py={20}
+      px={4}
+      position="relative"
+    >
+      <QuizAppBar showHome={true} showLogout={true} onHome={() => navigate('/')} onLogout={onLogout} title={`Round 1 - Question ${currentQuestionIndex + 1}`} />
+      <Container maxW="container.xl" pt={10}>
+        <MotionBox
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          bg={cardBg}
+          borderRadius="2xl"
+          p={12}
+          boxShadow="2xl"
+        >
+          <VStack spacing={8}>
+            <HStack justify="space-between" w="full">
+              <Heading
+                size="xl"
+                bgGradient="linear(to-r, blue.500, purple.500)"
+                bgClip="text"
+                fontWeight="extrabold"
               >
-                Previous
-              </Button>
-              <Button
-                onClick={next}
-                variant="contained"
-                size="large"
-                sx={{ fontSize: 24, px: 4, py: 1, minWidth: 120, borderRadius: 3, boxShadow: 2, transition: 'transform 0.2s', '&:hover': { transform: 'scale(1.04)', boxShadow: 8 } }}
+                Round 1 - Question {currentQuestionIndex + 1} of {questionsData.length}
+              </Heading>
+
+              <HStack spacing={4}>
+                <Badge
+                  colorScheme={autoAdvance ? 'green' : 'gray'}
+                  fontSize="md"
+                  px={3}
+                  py={1}
+                >
+                  {autoAdvance ? 'Auto Advance ON' : 'Auto Advance OFF'}
+                </Badge>
+                {autoAdvance && (
+                  <Badge colorScheme="blue" fontSize="md" px={3} py={1}>
+                    {timeLeft}s
+                  </Badge>
+                )}
+              </HStack>
+            </HStack>
+
+            <Progress
+              value={(timeLeft / 10) * 100}
+              colorScheme="blue"
+              size="lg"
+              borderRadius="full"
+              w="full"
+            />
+
+            <Divider />
+
+            <Box w="full">
+              <Text fontSize="3xl" fontWeight="bold" color={textColor} mb={8} textAlign="center">
+                {currentQuestion.question}
+              </Text>
+
+              <SimpleGrid columns={1} spacing={4}>
+                {Object.entries(currentQuestion.options).map(([key, value]) => (
+                  <MotionBox
+                    key={key}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    p={6}
+                    bg={useColorModeValue('gray.50', 'gray.700')}
+                    borderRadius="xl"
+                    borderWidth="2px"
+                    borderColor="transparent"
+                    cursor="pointer"
+                    _hover={{
+                      borderColor: 'blue.300',
+                      bg: useColorModeValue('blue.50', 'blue.900')
+                    }}
+                  >
+                    <HStack>
+                      <Badge colorScheme="blue" fontSize="lg" px={4} py={2}>
+                        {key.toUpperCase()}
+                      </Badge>
+                      <Text fontSize="xl" color={textColor} fontWeight="medium">
+                        {value}
+                      </Text>
+                    </HStack>
+                  </MotionBox>
+                ))}
+              </SimpleGrid>
+            </Box>
+
+            <HStack spacing={6} pt={4}>
+              <MotionButton
+                size="lg"
+                colorScheme="gray"
+                onClick={handlePreviousQuestion}
+                disabled={currentQuestionIndex === 0}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
-                {current === questionsData.length - 1 ? 'Finish' : 'Next'}
-              </Button>
-            </Stack>
-          </Paper>
-        </Fade>
-      </Box>
+                ← Previous
+              </MotionButton>
+
+              <MotionButton
+                size="lg"
+                colorScheme="blue"
+                onClick={() => setAutoAdvance(!autoAdvance)}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                {autoAdvance ? '⏸️ Pause' : '▶️ Auto Advance'}
+              </MotionButton>
+
+              <MotionButton
+                size="lg"
+                colorScheme="green"
+                onClick={handleNextQuestion}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                Next →
+              </MotionButton>
+            </HStack>
+
+            <Text fontSize="sm" color={textColor} opacity={0.7} textAlign="center">
+              Use arrow keys to navigate • Space to toggle auto advance
+            </Text>
+          </VStack>
+        </MotionBox>
+      </Container>
     </Box>
   );
 }

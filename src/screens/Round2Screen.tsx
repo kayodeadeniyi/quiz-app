@@ -1,145 +1,276 @@
-import React, { useEffect, useState } from 'react';
-import { Box, Button, Typography, Paper, Stack, Fade, useTheme } from '@mui/material';
-import { useSound } from '../utils/useSound';
-import ConventionAppBar from '../components/ConventionAppBar';
+import React, { useState } from 'react';
+import {
+  Box,
+  Button,
+  Text,
+  VStack,
+  HStack,
+  Container,
+  Heading,
+  useColorModeValue,
+  SimpleGrid,
+  Badge,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure
+} from '@chakra-ui/react';
+import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import questionsData from '../config/questions-round2.json';
+import { useSound } from '../utils/useSound';
+import QuizAppBar from '../components/QuizAppBar';
+import Confetti from 'react-confetti';
 
-interface Question {
-  id: number;
-  category: string;
-  question: string;
-  options: Record<string, string>;
-  answer: string;
-}
+const MotionBox = motion(Box);
+const MotionButton = motion(Button);
 
-export default function Round2Screen({ onLogout, darkMode, onToggleDarkMode }: { onLogout: () => void, darkMode: boolean, onToggleDarkMode: () => void }) {
-  const [questions, setQuestions] = useState<Question[]>([]);
-  const [selected, setSelected] = useState<Question | null>(null);
+export default function Round2Screen({ onLogout, darkMode, onToggleDarkMode }: {
+  onLogout: () => void,
+  darkMode: boolean,
+  onToggleDarkMode: () => void
+}) {
+  const [selectedQuestion, setSelectedQuestion] = useState<number | null>(null);
   const [showAnswer, setShowAnswer] = useState(false);
-  const [answered, setAnswered] = useState<Set<number>>(new Set());
-  const playSound = useSound();
-  const [fadeIn, setFadeIn] = useState(true);
+  const [answeredQuestions, setAnsweredQuestions] = useState<Set<number>>(new Set());
+  const [lockedAnswer, setLockedAnswer] = useState<string | null>(null);
+  const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
+  const [confetti, setConfetti] = useState(false);
   const navigate = useNavigate();
-  const theme = useTheme();
+  const playSound = useSound();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
-  useEffect(() => {
-    setQuestions(questionsData);
-  }, []);
+  const bgGradient = useColorModeValue(
+    'linear(to-br, blue.50, purple.50)',
+    'linear(to-br, gray.900, blue.900)'
+  );
+  const cardBg = useColorModeValue('white', 'gray.800');
+  const textColor = useColorModeValue('gray.800', 'white');
 
-  useEffect(() => {
-    setFadeIn(false);
-    const t = setTimeout(() => setFadeIn(true), 50);
-    return () => clearTimeout(t);
-  }, [selected]);
-
-  const handleSelect = (q: Question) => {
-    setSelected(q);
+  const handleQuestionSelect = (index: number) => {
+    setSelectedQuestion(index);
     setShowAnswer(false);
-    playSound('select.mp3');
+    setLockedAnswer(null);
+    setSelectedAnswer(null);
+    onOpen();
+    playSound('select');
   };
 
-  const handleReveal = () => {
+  const handleSelectAnswer = (key: string) => {
+    if (!showAnswer) {
+      setSelectedAnswer(key);
+      playSound('select');
+    }
+  };
+
+  const handleRevealAnswer = () => {
     setShowAnswer(true);
-    setAnswered(prev => new Set(prev).add(selected!.id));
-    playSound('reveal.mp3');
+    setLockedAnswer(selectedAnswer);
+    if (selectedQuestion !== null) {
+      setAnsweredQuestions(prev => new Set([...prev, selectedQuestion]));
+    }
+    if (selectedAnswer && currentQuestion && selectedAnswer === currentQuestion.answer) {
+      setConfetti(true);
+      setTimeout(() => setConfetti(false), 4000);
+    }
+    playSound('reveal');
   };
 
-  const handleBack = () => {
-    setSelected(null);
+  const handleCloseModal = () => {
+    onClose();
+    setSelectedQuestion(null);
     setShowAnswer(false);
+    setLockedAnswer(null);
+    setSelectedAnswer(null);
+    setConfetti(false);
   };
 
-  if (!questions.length) {
-    return <Typography>Loading questions...</Typography>;
-  }
-
-  const bgGradient = theme.palette.mode === 'dark'
-    ? 'linear-gradient(135deg, #23272f 0%, #2d3748 100%)'
-    : 'linear-gradient(135deg, #f8fafc 0%, #e3f0ff 100%)';
-  const paperBg = theme.palette.mode === 'dark' ? '#23272f' : '#fff';
-
-  if (selected) {
-    return (
-      <Box sx={{ minHeight: '100vh', background: bgGradient }}>
-        <ConventionAppBar showHome showLogout onLogout={onLogout} onHome={() => navigate('/')} darkMode={darkMode} onToggleDarkMode={onToggleDarkMode} />
-        <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" minHeight="100vh" sx={{ p: { xs: 1, md: 2 } }}>
-          <Fade in={fadeIn} timeout={600}>
-            <Paper sx={{ p: { xs: 2, md: 6 }, width: '100%', maxWidth: 1400, minHeight: 500, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', borderRadius: 5, boxShadow: 8, mt: 8, background: paperBg }}>
-              <Typography variant="h3" mb={2} align="center" sx={{ fontWeight: 600, color: 'primary.main', fontSize: { xs: 24, md: 36 } }}>
-                Question {selected.id}
-              </Typography>
-              <Typography variant="h1" mb={4} align="center" sx={{ fontWeight: 700, fontSize: { xs: 28, md: 56 }, lineHeight: 1.2 }}>
-                {selected.question}
-              </Typography>
-              <Stack spacing={3} sx={{ width: '100%', maxWidth: 1000 }}>
-                {Object.entries(selected.options).map(([key, value], idx) => (
-                  <Fade in={fadeIn} timeout={600} key={key} style={{ transitionDelay: `${idx * 40}ms` }}>
-                    <Box sx={{
-                      p: { xs: 2, md: 4 },
-                      border: '3px solid #e0e0e0',
-                      borderRadius: 3,
-                      backgroundColor: theme.palette.mode === 'dark' ? '#23272f' : '#fafafa',
-                      textAlign: 'center',
-                      transition: 'all 0.3s ease',
-                      boxShadow: 2,
-                      '&:hover': {
-                        borderColor: 'primary.main',
-                        backgroundColor: theme.palette.mode === 'dark' ? '#2d3748' : '#f0f8ff',
-                        transform: 'translateY(-2px) scale(1.03)',
-                        boxShadow: 8
-                      }
-                    }}>
-                      <Typography variant="h3" sx={{ fontWeight: 700, fontSize: { xs: 20, md: 32 } }}>
-                        <b style={{ color: '#1976d2' }}>{key.toUpperCase()}.</b> {value}
-                      </Typography>
-                    </Box>
-                  </Fade>
-                ))}
-              </Stack>
-              {!showAnswer ? (
-                <Button variant="contained" color="primary" sx={{ mt: 4, fontSize: 24, px: 4, py: 2, minWidth: 200, borderRadius: 3, boxShadow: 6, transition: 'transform 0.2s', '&:hover': { transform: 'scale(1.04)', boxShadow: 12 } }} onClick={handleReveal}>
-                  Reveal Answer
-                </Button>
-              ) : (
-                <Typography mt={3} color="success.main" variant="h5" align="center">
-                  Correct Answer: <b>{selected.answer.toUpperCase()}</b> - {selected.options[selected.answer as keyof typeof selected.options]}
-                </Typography>
-              )}
-              <Button sx={{ mt: 4, fontSize: 20, minWidth: 200, borderRadius: 3, boxShadow: 2, transition: 'transform 0.2s', '&:hover': { transform: 'scale(1.04)', boxShadow: 8 } }} onClick={handleBack}>Back to Board</Button>
-            </Paper>
-          </Fade>
-        </Box>
-      </Box>
-    );
-  }
+  const currentQuestion = selectedQuestion !== null ? questionsData[selectedQuestion] : null;
 
   return (
-    <Box sx={{ minHeight: '100vh', background: bgGradient }}>
-      <ConventionAppBar showHome showLogout onLogout={onLogout} onHome={() => navigate('/')} darkMode={darkMode} onToggleDarkMode={onToggleDarkMode} />
-      <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" minHeight="100vh" sx={{ p: { xs: 2, md: 4 } }}>
-        <Fade in={fadeIn} timeout={600}>
-          <Box sx={{ width: '100%', maxWidth: 1800, p: { xs: 1, md: 4 } }}>
-            <Typography variant="h4" mb={3} align="center">Round 2: Question Board</Typography>
-            <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: 2, width: '100%', p: { xs: 1, md: 3 } }}>
-              {questions.map((q, idx) => (
-                <Fade in={fadeIn} timeout={600} key={q.id} style={{ transitionDelay: `${idx * 10}ms` }}>
-                  <Button
-                    variant="contained"
-                    color={answered.has(q.id) ? 'success' : 'primary'}
-                    disabled={answered.has(q.id)}
-                    fullWidth
-                    sx={{ height: 80, fontSize: 36, fontWeight: 700, borderRadius: 3, boxShadow: 2, transition: 'transform 0.2s', '&:hover': { transform: 'scale(1.04)', boxShadow: 8 } }}
-                    onClick={() => handleSelect(q)}
-                  >
-                    {q.id}
-                  </Button>
-                </Fade>
-              ))}
+    <Box
+      minH="100vh"
+      bgGradient={bgGradient}
+      py={20}
+      px={4}
+      position="relative"
+    >
+      <QuizAppBar showHome={true} showLogout={true} onHome={() => navigate('/')} onLogout={onLogout} title="Round 2 - Question Board" />
+      <Container maxW="container.xl" pt={24}>
+        <MotionBox
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          bg={cardBg}
+          borderRadius="2xl"
+          p={12}
+          boxShadow="2xl"
+        >
+          <VStack spacing={8}>
+            <Box textAlign="center">
+              <Heading
+                size="2xl"
+                bgGradient="linear(to-r, blue.500, purple.500)"
+                bgClip="text"
+                fontWeight="extrabold"
+                mb={4}
+              >
+                Round 2 - Question Board
+              </Heading>
+              <Text fontSize="xl" color={textColor} opacity={0.8}>
+                Select a question number to begin
+              </Text>
             </Box>
-          </Box>
-        </Fade>
-      </Box>
+
+            <SimpleGrid columns={[2, 3, 4, 5, 6]} spacing={4} w="full">
+              {questionsData.map((_, index) => (
+                <MotionButton
+                  key={index}
+                  size="lg"
+                  h="20"
+                  fontSize="2xl"
+                  fontWeight="bold"
+                  colorScheme={answeredQuestions.has(index) ? 'green' : 'blue'}
+                  variant={answeredQuestions.has(index) ? 'solid' : 'outline'}
+                  onClick={() => handleQuestionSelect(index)}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  disabled={answeredQuestions.has(index)}
+                >
+                  {answeredQuestions.has(index) ? '✓' : index + 1}
+                </MotionButton>
+              ))}
+            </SimpleGrid>
+
+            <HStack spacing={6} pt={4}>
+              <MotionButton
+                size="lg"
+                colorScheme="gray"
+                onClick={() => navigate('/')}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                🏠 Back to Home
+              </MotionButton>
+            </HStack>
+          </VStack>
+        </MotionBox>
+      </Container>
+
+      <Modal isOpen={isOpen} onClose={handleCloseModal} size="6xl" isCentered>
+        <ModalOverlay />
+        <ModalContent borderRadius="2xl" p={0} minH="85vh" display="flex" justifyContent="center" maxW="6xl">
+          <ModalHeader p={0} bgGradient="linear(to-r, blue.500, purple.500)" borderTopRadius="2xl">
+            <Box px={12} py={8}>
+              <Heading size="2xl" color="white" fontWeight="extrabold">
+                Question {selectedQuestion !== null ? selectedQuestion + 1 : ''}
+              </Heading>
+            </Box>
+          </ModalHeader>
+          <ModalCloseButton size="lg" color="white" top={3} right={3} />
+          <ModalBody pb={16} px={16} pt={10} display="flex" flexDirection="column" justifyContent="center" flex="1" minH="60vh">
+            {confetti && <Confetti width={window.innerWidth} height={window.innerHeight} numberOfPieces={300} recycle={false} />}
+            {currentQuestion && (
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
+                <VStack spacing={12} align="stretch" minH="40vh">
+                  <Box bg={useColorModeValue('blue.50', 'blue.900')} borderRadius="xl" px={10} py={8} mb={4}>
+                    <Text fontSize="3xl" fontWeight="bold" color={useColorModeValue('blue.800', 'blue.100')}
+                      textAlign="center">
+                      {currentQuestion.question}
+                    </Text>
+                  </Box>
+
+                  <SimpleGrid columns={1} spacing={6}>
+                    {Object.entries(currentQuestion.options).map(([key, value]) => {
+                      const isSelected = selectedAnswer === key && !showAnswer;
+                      const isLocked = lockedAnswer === key && showAnswer;
+                      const isCorrect = showAnswer && key === currentQuestion.answer;
+                      const isIncorrect = showAnswer && lockedAnswer === key && lockedAnswer !== currentQuestion.answer;
+                      return (
+                        <HStack
+                          key={key}
+                          p={5}
+                          bg={isCorrect ? 'green.100' : isLocked ? 'purple.100' : isSelected ? 'purple.50' : useColorModeValue('gray.50', 'gray.700')}
+                          borderRadius="lg"
+                          borderWidth="2px"
+                          borderColor={isCorrect ? 'green.500' : isLocked ? 'purple.500' : isSelected ? 'purple.400' : 'gray.200'}
+                          boxShadow={isCorrect ? 'lg' : undefined}
+                          position="relative"
+                          transition="all 0.2s"
+                          cursor={!showAnswer ? 'pointer' : 'default'}
+                          onClick={() => handleSelectAnswer(key)}
+                        >
+                          <Badge
+                            colorScheme={isCorrect ? 'green' : isLocked ? 'purple' : isSelected ? 'purple' : 'blue'}
+                            fontSize="xl"
+                            px={4}
+                            py={2}
+                          >
+                            {key.toUpperCase()}
+                          </Badge>
+                          <Text fontSize="xl" color={textColor} fontWeight="medium">
+                            {value}
+                          </Text>
+                          {isCorrect && (
+                            <Badge colorScheme="green" ml="auto" fontSize="lg" px={4} py={2}>
+                              ✓ Correct
+                            </Badge>
+                          )}
+                          {isIncorrect && (
+                            <Badge colorScheme="red" ml="auto" fontSize="lg" px={4} py={2}>
+                              ❌ Incorrect
+                            </Badge>
+                          )}
+                          {isSelected && !showAnswer && (
+                            <Badge colorScheme="purple" ml="auto" fontSize="md" px={3} py={1}>
+                              Selected
+                            </Badge>
+                          )}
+
+                        </HStack>
+                      );
+                    })}
+                  </SimpleGrid>
+
+                  <HStack justify="center" pt={4}>
+                    {!showAnswer ? (
+                      <MotionButton
+                        size="lg"
+                        colorScheme="purple"
+                        fontSize="xl"
+                        px={10}
+                        py={6}
+                        onClick={handleRevealAnswer}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        isDisabled={selectedAnswer === null}
+                      >
+                        🔍 Reveal Answer
+                      </MotionButton>
+                    ) : (
+                      <MotionButton
+                        size="lg"
+                        colorScheme="blue"
+                        fontSize="xl"
+                        px={10}
+                        py={6}
+                        onClick={handleCloseModal}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        ✅ Got it!
+                      </MotionButton>
+                    )}
+                  </HStack>
+                </VStack>
+              </motion.div>
+            )}
+          </ModalBody>
+        </ModalContent>
+      </Modal>
     </Box>
   );
 }

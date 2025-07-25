@@ -1,96 +1,146 @@
 import React from 'react';
-import { Box, Button, Typography, Stack, Paper, Divider, Fade, useTheme } from '@mui/material';
+import { Box, Button, Text, VStack, Container, Heading, useColorModeValue } from '@chakra-ui/react';
+import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import ConventionAppBar from '../components/ConventionAppBar';
+import QuizAppBar from '../components/QuizAppBar';
+import { useBranding } from '../utils/useBranding';
 
-console.log('HomeScreen rendered');
+const MotionBox = motion(Box);
+const MotionButton = motion(Button);
 
 export default function HomeScreen({ onLogout, darkMode, onToggleDarkMode }: { onLogout: () => void, darkMode: boolean, onToggleDarkMode: () => void }) {
   const navigate = useNavigate();
-  const theme = useTheme();
-  const bgGradient = theme.palette.mode === 'dark'
-    ? 'linear-gradient(135deg, #23272f 0%, #2d3748 100%)'
-    : 'linear-gradient(135deg, #f8fafc 0%, #e3f0ff 100%)';
-  const paperBg = theme.palette.mode === 'dark' ? '#23272f' : '#fff';
+  const { conventionName } = useBranding();
+  const bgGradient = useColorModeValue(
+    'linear(to-br, blue.50, purple.50)',
+    'linear(to-br, gray.900, blue.900)'
+  );
+  const cardBg = useColorModeValue('white', 'gray.800');
+  const textColor = useColorModeValue('gray.800', 'white');
+
   return (
-    <Box sx={{ minHeight: '100vh', background: bgGradient }}>
-      <ConventionAppBar showLogout={true} darkMode={darkMode} onToggleDarkMode={onToggleDarkMode} />
-      <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" minHeight="100vh" sx={{ p: 4 }}>
-        <Fade in={true} timeout={600}>
-          <Paper sx={{ p: 8, width: '100%', maxWidth: 800, minHeight: 500, display: 'flex', flexDirection: 'column', alignItems: 'center', borderRadius: 5, boxShadow: 8, mt: 8, background: paperBg }}>
-            <Typography variant="h1" mb={2} align="center" sx={{ fontWeight: 700, color: 'primary.main' }}>
-              Quiz Master Home
-            </Typography>
-            <Typography variant="h5" mb={6} align="center" sx={{ color: 'text.secondary', fontWeight: 400 }}>
+    <Box
+      minH="100vh"
+      bgGradient={bgGradient}
+      px={4}
+      position="relative"
+      display="flex"
+      alignItems="center"
+      justifyContent="center"
+    >
+      {/* Branding Accent Watermark */}
+      <Box
+        position="absolute"
+        top="50%"
+        left="50%"
+        transform="translate(-50%, -50%)"
+        zIndex={0}
+        pointerEvents="none"
+        opacity={0.07}
+        fontSize={{ base: '6xl', md: '9xl', xl: '10xl' }}
+        fontWeight="extrabold"
+        color={useColorModeValue('blue.200', 'blue.900')}
+        textAlign="center"
+        userSelect="none"
+        whiteSpace="nowrap"
+      >
+        {conventionName}
+      </Box>
+      <QuizAppBar showHome={false} showLogout={true} onLogout={onLogout} title="Quiz Home" />
+      <Container maxW="container.md" pt={24}>
+        <MotionBox
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          bg={cardBg}
+          borderRadius="2xl"
+          p={12}
+          boxShadow="2xl"
+          textAlign="center"
+          position="relative"
+          zIndex={1}
+        >
+          <VStack spacing={8}>
+            <MotionBox
+              initial={{ scale: 0.8 }}
+              animate={{ scale: 1 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
+              <Heading
+                size="2xl"
+                bgGradient="linear(to-r, blue.500, purple.500)"
+                bgClip="text"
+                fontWeight="extrabold"
+                letterSpacing="tight"
+              >
+                Home
+              </Heading>
+              <Text fontSize="xl" color={textColor} opacity={0.8} mt={2}>
+                Ready to lead an amazing quiz experience!
+              </Text>
+            </MotionBox>
+
+            <Text fontSize="xl" color={textColor} opacity={0.8}>
               Select a round to begin
-            </Typography>
-            <Divider sx={{ width: '100%', mb: 6 }} />
-            <Stack spacing={4} width="100%" maxWidth={500}>
-              <Button
-                variant="contained"
-                color="primary"
-                size="large"
-                sx={{
-                  fontSize: 32,
-                  py: 3,
-                  px: 4,
-                  borderRadius: 3,
-                  boxShadow: 4,
-                  transition: 'transform 0.2s',
-                  '&:hover': {
-                    transform: 'scale(1.04)',
-                    boxShadow: 8
-                  }
+            </Text>
+
+            <VStack spacing={6} w="full" maxW="md">
+              <MotionButton
+                size="lg"
+                colorScheme="blue"
+                w="full"
+                h="16"
+                fontSize="xl"
+                fontWeight="bold"
+                borderRadius="xl"
+                boxShadow="lg"
+                whileHover={{
+                  scale: 1.05,
+                  boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)"
                 }}
+                whileTap={{ scale: 0.95 }}
                 onClick={() => navigate('/instructions/round1')}
               >
-                Start Round 1
-              </Button>
-              <Button
-                variant="contained"
-                color="secondary"
-                size="large"
-                sx={{
-                  fontSize: 32,
-                  py: 3,
-                  px: 4,
-                  borderRadius: 3,
-                  boxShadow: 4,
-                  transition: 'transform 0.2s',
-                  '&:hover': {
-                    transform: 'scale(1.04)',
-                    boxShadow: 8
-                  }
+                🎯 Start Round 1
+              </MotionButton>
+
+              <MotionButton
+                size="lg"
+                colorScheme="purple"
+                w="full"
+                h="16"
+                fontSize="xl"
+                fontWeight="bold"
+                borderRadius="xl"
+                boxShadow="lg"
+                whileHover={{
+                  scale: 1.05,
+                  boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)"
                 }}
+                whileTap={{ scale: 0.95 }}
                 onClick={() => navigate('/instructions/round2')}
               >
-                Start Round 2
-              </Button>
-              <Button
-                variant="outlined"
-                color="inherit"
-                size="large"
-                sx={{
-                  fontSize: 24,
-                  py: 2,
-                  px: 4,
-                  borderRadius: 3,
-                  mt: 4,
-                  boxShadow: 2,
-                  transition: 'transform 0.2s',
-                  '&:hover': {
-                    transform: 'scale(1.04)',
-                    boxShadow: 8
-                  }
-                }}
+                🎲 Start Round 2
+              </MotionButton>
+
+              <MotionButton
+                size="lg"
+                variant="outline"
+                colorScheme="gray"
+                w="full"
+                h="14"
+                fontSize="lg"
+                borderRadius="xl"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
                 onClick={onLogout}
               >
-                Logout
-              </Button>
-            </Stack>
-          </Paper>
-        </Fade>
-      </Box>
+                👋 Logout
+              </MotionButton>
+            </VStack>
+          </VStack>
+        </MotionBox>
+      </Container>
     </Box>
   );
 }

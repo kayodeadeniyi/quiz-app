@@ -1,31 +1,24 @@
-import { useEffect, useState } from 'react';
-import { createTheme, Theme } from '@mui/material';
-import themeConfig from '../config/theme.json';
+import { createTheme } from '@mui/material/styles';
 
-export function useThemeConfig(): Theme {
-  const [theme, setTheme] = useState<Theme>(
-    createTheme({
-      palette: {
-        primary: { main: '#1976d2' },
-        secondary: { main: '#ff9800' },
-        background: { default: '#f5f5f5' },
-        text: { primary: '#222222' },
+export function useThemeConfig() {
+  return createTheme({
+    palette: {
+      primary: {
+        main: '#1976d2', // Google blue
       },
-    })
-  );
-
-  useEffect(() => {
-    setTheme(
-      createTheme({
-        palette: {
-          primary: { main: themeConfig.primaryColor },
-          secondary: { main: themeConfig.secondaryColor },
-          background: { default: themeConfig.backgroundColor },
-          text: { primary: themeConfig.textColor },
-        },
-      })
-    );
-  }, []);
-
-  return theme;
+      secondary: {
+        main: '#ff9800', // Google orange accent
+      },
+      background: {
+        default: '#f5f5f5',
+        paper: '#fff',
+      },
+    },
+    typography: {
+      fontFamily: 'Roboto, Arial, sans-serif',
+    },
+    shape: {
+      borderRadius: 8, // Standard Material
+    },
+  });
 }
