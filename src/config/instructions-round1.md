@@ -1,0 +1,6 @@
+# Round 1 Instructions
+
+- Each participant will answer questions in sequence.
+- You have a limited time to answer each question.
+- Use the arrow keys to navigate between questions.
+- Answers will be reviewed at the end of the round.
