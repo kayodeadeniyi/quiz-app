@@ -1,683 +1,361 @@
 [
   {
-    "question": "What is the first book of the Bible?",
+    "id": 1,
+    "question": "What were the names of Moses' sons?",
     "options": {
-      "a": "Genesis",
-      "b": "Exodus",
-      "c": "Leviticus",
-      "d": "Numbers",
-      "e": "Deuteronomy"
+      "a": "Jacob and Esau",
+      "b": "Phinehas and Eleazar",
+      "c": "Nadab and Abihu",
+      "d": "Caleb and Joshua",
+      "e": "Gershom and Eliezer"
+    },
+    "answer": "e"
+  },
+  {
+    "id": 2,
+    "question": "Who accompanied Moses when he first confronted Pharaoh?",
+    "options": {
+      "a": "Miriam",
+      "b": "Aaron",
+      "c": "Joshua",
+      "d": "Caleb",
+      "e": "Hur"
+    },
+    "answer": "b"
+  },
+  {
+    "id": 3,
+    "question": "What sign convinced Pharaoh's magicians that the power of God was greater than theirs?",
+    "options": {
+      "a": "Frogs",
+      "b": "The Nile turning to blood",
+      "c": "Gnats",
+      "d": "Darkness",
+      "e": "Locusts"
+    },
+    "answer": "c"
+  },
+  {
+    "id": 4,
+    "question": "What did the Israelites borrow from the Egyptians before leaving Egypt?",
+    "options": {
+      "a": "Clothing and jewelry",
+      "b": "Gold and silver",
+      "c": "Weapons",
+      "d": "Food and spices",
+      "e": "All of the above"
+    },
+    "answer": "e"
+  },
+  {
+    "id": 5,
+    "question": "What was unique about the manna gathered on the sixth day?",
+    "options": {
+      "a": "It was twice as much",
+      "b": "It melted instantly",
+      "c": "It was sweeter",
+      "d": "It was bitter",
+      "e": "It turned red"
     },
     "answer": "a"
   },
   {
-    "question": "Who led the Israelites out of Egypt?",
+    "id": 6,
+    "question": "Who offered sacrifices with Moses on Mount Sinai?",
     "options": {
-      "a": "Abraham",
-      "b": "Moses",
-      "c": "Joshua",
-      "d": "Aaron",
-      "e": "Joseph"
+      "a": "The priests",
+      "b": "Aaron",
+      "c": "The elders of Israel",
+      "d": "Joshua",
+      "e": "Miriam"
     },
-    "answer": "b"
+    "answer": "c"
   },
   {
-    "question": "Who was thrown into the lion's den?",
+    "id": 7,
+    "question": "What color thread was commanded to be used in making the priestly garments?",
     "options": {
-      "a": "David",
-      "b": "Daniel",
-      "c": "Samuel",
-      "d": "Elijah",
-      "e": "Solomon"
+      "a": "Yellow",
+      "b": "Scarlet",
+      "c": "Purple",
+      "d": "Blue",
+      "e": "All of the above"
     },
-    "answer": "b"
+    "answer": "e"
   },
   {
-    "question": "Who built the ark?",
+    "id": 8,
+    "question": "Which son of Aaron succeeded him as high priest?",
     "options": {
-      "a": "Noah",
-      "b": "Moses",
+      "a": "Ithamar",
+      "b": "Phinehas",
+      "c": "Nadab",
+      "d": "Eleazar",
+      "e": "Gershom"
+    },
+    "answer": "d"
+  },
+  {
+    "id": 9,
+    "question": "What did God promise if Israel kept His covenant in Exodus 19?",
+    "options": {
+      "a": "Long life",
+      "b": "Land of milk and honey",
+      "c": "A king",
+      "d": "Victory over enemies",
+      "e": "They would be His treasured possession"
+    },
+    "answer": "e"
+  },
+  {
+    "id": 10,
+    "question": "What was Bezalel specifically gifted to do?",
+    "options": {
+      "a": "Play music",
+      "b": "Prophesy",
+      "c": "Craft and design",
+      "d": "Offer sacrifices",
+      "e": "Teach the law"
+    },
+    "answer": "c"
+  },
+  {
+    "id": 11,
+    "question": "What happened to the calf Aaron made when Moses returned?",
+    "options": {
+      "a": "It was burned",
+      "b": "It was smashed",
+      "c": "It was melted and ground to powder",
+      "d": "It was buried",
+      "e": "It was thrown into the river"
+    },
+    "answer": "c"
+  },
+  {
+    "id": 12,
+    "question": "What did the cloud of God's presence cover once it was finished?",
+    "options": {
+      "a": "The Ark",
+      "b": "The altar",
+      "c": "The Tabernacle",
+      "d": "Mount Sinai",
+      "e": "The Holy of Holies"
+    },
+    "answer": "c"
+  },
+  {
+    "id": 13,
+    "question": "How did Moses' face appear after speaking with the Lord?",
+    "options": {
+      "a": "It turned pale",
+      "b": "It looked older",
+      "c": "It shone with light",
+      "d": "It was veiled",
+      "e": "It became scarred"
+    },
+    "answer": "c"
+  },
+  {
+    "id": 14,
+    "question": "Who did God say He would raise up as a prophet like Moses?",
+    "options": {
+      "a": "Joshua",
+      "b": "David",
+      "c": "Jeremiah",
+      "d": "Samuel",
+      "e": "Christ"
+    },
+    "answer": "e"
+  },
+  {
+    "id": 15,
+    "question": "How many men did Jethro advise Moses to appoint as judges?",
+    "options": {
+      "a": "70",
+      "b": "100",
+      "c": "120",
+      "d": "200",
+      "e": "300"
+    },
+    "answer": "a"
+  },
+  {
+    "id": 16,
+    "question": "According to Romans 1, what did people exchange the truth of God for?",
+    "options": {
+      "a": "The law",
+      "b": "Tradition",
+      "c": "A lie",
+      "d": "Wealth",
+      "e": "Foolishness"
+    },
+    "answer": "c"
+  },
+  {
+    "id": 17,
+    "question": "What advantage does Paul say Jews had in Romans 3?",
+    "options": {
+      "a": "The law",
+      "b": "The prophets",
+      "c": "The covenants",
+      "d": "The temple",
+      "e": "The oracles of God"
+    },
+    "answer": "e"
+  },
+  {
+    "id": 18,
+    "question": "Who was declared righteous before circumcision in Romans 4?",
+    "options": {
+      "a": "Moses",
+      "b": "David",
       "c": "Abraham",
       "d": "Isaac",
       "e": "Jacob"
     },
-    "answer": "a"
-  },
-  {
-    "question": "Who was the first king of Israel?",
-    "options": {
-      "a": "David",
-      "b": "Saul",
-      "c": "Solomon",
-      "d": "Samuel",
-      "e": "Joshua"
-    },
-    "answer": "b"
-  },
-  {
-    "question": "Who was swallowed by a great fish?",
-    "options": {
-      "a": "Jonah",
-      "b": "Elijah",
-      "c": "Elisha",
-      "d": "Job",
-      "e": "Isaiah"
-    },
-    "answer": "a"
-  },
-  {
-    "question": "Who was the father of many nations?",
-    "options": {
-      "a": "Isaac",
-      "b": "Jacob",
-      "c": "Abraham",
-      "d": "Joseph",
-      "e": "Moses"
-    },
     "answer": "c"
   },
   {
-    "question": "Who was the wisest king?",
+    "id": 19,
+    "question": "Romans 6 says those baptized into Christ are baptized into what?",
     "options": {
-      "a": "David",
-      "b": "Saul",
-      "c": "Solomon",
-      "d": "Hezekiah",
-      "e": "Josiah"
+      "a": "Life",
+      "b": "Faith",
+      "c": "Hope",
+      "d": "His death",
+      "e": "His Spirit"
     },
-    "answer": "c"
+    "answer": "d"
   },
   {
-    "question": "Who was the first Christian martyr?",
+    "id": 20,
+    "question": "Romans 7 compares being released from the law to what earthly relationship?",
     "options": {
-      "a": "Stephen",
-      "b": "Paul",
-      "c": "Peter",
-      "d": "James",
-      "e": "John"
+      "a": "Parent and child",
+      "b": "Slave and master",
+      "c": "Soldier and commander",
+      "d": "Husband and wife",
+      "e": "Teacher and student"
     },
-    "answer": "a"
+    "answer": "d"
   },
   {
-    "question": "Who denied Jesus three times?",
+    "id": 21,
+    "question": "In Romans 8, Paul says creation waits eagerly for what?",
     "options": {
-      "a": "Peter",
-      "b": "John",
-      "c": "Judas",
-      "d": "Thomas",
-      "e": "James"
+      "a": "The law",
+      "b": "The new covenant",
+      "c": "Redemption",
+      "d": "The revealing of the sons of God",
+      "e": "The resurrection"
     },
-    "answer": "a"
+    "answer": "d"
   },
   {
-    "question": "Who wrote most of the New Testament letters?",
-    "options": {
-      "a": "Peter",
-      "b": "Paul",
-      "c": "John",
-      "d": "James",
-      "e": "Luke"
-    },
-    "answer": "b"
-  },
-  {
-    "question": "Who baptized Jesus?",
-    "options": {
-      "a": "Peter",
-      "b": "John the Baptist",
-      "c": "Paul",
-      "d": "James",
-      "e": "Andrew"
-    },
-    "answer": "b"
-  },
-  {
-    "question": "Who was the mother of Jesus?",
-    "options": {
-      "a": "Mary",
-      "b": "Elizabeth",
-      "c": "Anna",
-      "d": "Sarah",
-      "e": "Ruth"
-    },
-    "answer": "a"
-  },
-  {
-    "question": "Who was the father of Jesus?",
+    "id": 22,
+    "question": "Romans 9 describes God's sovereignty using which Old Testament figure as an example?",
     "options": {
       "a": "Joseph",
-      "b": "David",
-      "c": "Abraham",
-      "d": "God",
-      "e": "Zechariah"
+      "b": "Saul",
+      "c": "Pharaoh",
+      "d": "Samuel",
+      "e": "David"
+    },
+    "answer": "c"
+  },
+  {
+    "id": 23,
+    "question": "Romans 10:17 says faith comes by what?",
+    "options": {
+      "a": "Sacrifice",
+      "b": "Prayer",
+      "c": "Fasting",
+      "d": "Hearing the word of God",
+      "e": "Obedience"
     },
     "answer": "d"
   },
   {
-    "question": "Who betrayed Jesus?",
+    "id": 24,
+    "question": "What does Paul call the law in Romans 7:12?",
     "options": {
-      "a": "Peter",
-      "b": "John",
-      "c": "Judas Iscariot",
-      "d": "Thomas",
-      "e": "James"
+      "a": "Burden",
+      "b": "Weak",
+      "c": "Holy",
+      "d": "Temporary",
+      "e": "Incomplete"
     },
     "answer": "c"
   },
   {
-    "question": "Who was the first disciple called by Jesus?",
+    "id": 25,
+    "question": "Who does Paul say intercedes for us at the right hand of God in Romans 8?",
     "options": {
-      "a": "Peter",
-      "b": "Andrew",
-      "c": "John",
-      "d": "James",
-      "e": "Philip"
-    },
-    "answer": "b"
-  },
-  {
-    "question": "Who was the tax collector who became a disciple?",
-    "options": {
-      "a": "Matthew",
-      "b": "Mark",
-      "c": "Luke",
-      "d": "John",
-      "e": "Thomas"
-    },
-    "answer": "a"
-  },
-  {
-    "question": "Who was the doubting disciple?",
-    "options": {
-      "a": "Peter",
-      "b": "John",
-      "c": "Thomas",
-      "d": "James",
-      "e": "Andrew"
-    },
-    "answer": "c"
-  },
-  {
-    "question": "Who was the beloved disciple?",
-    "options": {
-      "a": "Peter",
-      "b": "John",
-      "c": "James",
-      "d": "Andrew",
-      "e": "Philip"
-    },
-    "answer": "b"
-  },
-  {
-    "question": "Who was the brother of James?",
-    "options": {
-      "a": "Peter",
-      "b": "John",
-      "c": "Andrew",
-      "d": "Philip",
-      "e": "Bartholomew"
-    },
-    "answer": "b"
-  },
-  {
-    "question": "Who was the first to see the risen Jesus?",
-    "options": {
-      "a": "Peter",
-      "b": "John",
-      "c": "Mary Magdalene",
-      "d": "Thomas",
-      "e": "James"
-    },
-    "answer": "c"
-  },
-  {
-    "question": "Who was the Roman governor who sentenced Jesus?",
-    "options": {
-      "a": "Herod",
-      "b": "Pilate",
-      "c": "Caesar",
-      "d": "Felix",
-      "e": "Festus"
-    },
-    "answer": "b"
-  },
-  {
-    "question": "Who was the high priest during Jesus' trial?",
-    "options": {
-      "a": "Caiaphas",
-      "b": "Annas",
-      "c": "Zechariah",
-      "d": "John",
-      "e": "Simon"
-    },
-    "answer": "a"
-  },
-  {
-    "question": "Who was the centurion who said 'Truly this was the Son of God'?",
-    "options": {
-      "a": "Cornelius",
-      "b": "Julius",
-      "c": "Claudius",
-      "d": "Marcus",
-      "e": "Lucius"
-    },
-    "answer": "a"
-  },
-  {
-    "question": "Who was the Ethiopian eunuch baptized by Philip?",
-    "options": {
-      "a": "Simon",
-      "b": "Cornelius",
-      "c": "Lydia",
-      "d": "The Ethiopian",
-      "e": "Saul"
+      "a": "Angels",
+      "b": "The Holy Spirit",
+      "c": "Moses",
+      "d": "Jesus Christ",
+      "e": "The apostles"
     },
     "answer": "d"
   },
   {
-    "question": "Who was the first Gentile convert?",
+    "id": 26,
+    "question": "What does Paul say should not be overcome by evil but overcome with good?",
     "options": {
-      "a": "Cornelius",
-      "b": "Lydia",
-      "c": "The Ethiopian",
-      "d": "Timothy",
-      "e": "Titus"
+      "a": "Faith",
+      "b": "Hope",
+      "c": "Love",
+      "d": "Life",
+      "e": "Sin"
+    },
+    "answer": "c"
+  },
+  {
+    "id": 27,
+    "question": "Romans 13 says rulers do not bear what in vain?",
+    "options": {
+      "a": "The sword",
+      "b": "The law",
+      "c": "The rod",
+      "d": "The scepter",
+      "e": "The shield"
     },
     "answer": "a"
   },
   {
-    "question": "Who was the first European convert?",
+    "id": 28,
+    "question": "In Romans 14, Paul says the kingdom of God is not eating and drinking, but what?",
     "options": {
-      "a": "Cornelius",
-      "b": "Lydia",
-      "c": "Timothy",
-      "d": "Titus",
-      "e": "Luke"
-    },
-    "answer": "b"
-  },
-  {
-    "question": "Who was Paul's traveling companion?",
-    "options": {
-      "a": "Timothy",
-      "b": "Titus",
-      "c": "Luke",
-      "d": "Mark",
-      "e": "Silas"
-    },
-    "answer": "e"
-  },
-  {
-    "question": "Who was the young disciple Paul mentored?",
-    "options": {
-      "a": "Titus",
-      "b": "Timothy",
-      "c": "Luke",
-      "d": "Mark",
-      "e": "Silas"
-    },
-    "answer": "b"
-  },
-  {
-    "question": "Who was the author of the Gospel of Luke?",
-    "options": {
-      "a": "Luke",
-      "b": "Mark",
-      "c": "John",
-      "d": "Matthew",
-      "e": "Paul"
-    },
-    "answer": "a"
-  },
-  {
-    "question": "Who was the author of the Gospel of Mark?",
-    "options": {
-      "a": "Luke",
-      "b": "Mark",
-      "c": "John",
-      "d": "Matthew",
-      "e": "Peter"
-    },
-    "answer": "b"
-  },
-  {
-    "question": "Who was the author of the Gospel of John?",
-    "options": {
-      "a": "Luke",
-      "b": "Mark",
-      "c": "John",
-      "d": "Matthew",
-      "e": "James"
-    },
-    "answer": "c"
-  },
-  {
-    "question": "Who was the author of the Gospel of Matthew?",
-    "options": {
-      "a": "Luke",
-      "b": "Mark",
-      "c": "John",
-      "d": "Matthew",
-      "e": "Peter"
+      "a": "Faith, hope, and love",
+      "b": "Law and order",
+      "c": "Sacrifice",
+      "d": "Righteousness, peace, and joy in the Holy Spirit",
+      "e": "Justice and mercy"
     },
     "answer": "d"
   },
   {
-    "question": "Who was the brother of Jesus?",
+    "id": 29,
+    "question": "Who does Paul commend in Romans 16 as fellow workers in Christ Jesus?",
     "options": {
-      "a": "James",
-      "b": "Peter",
-      "c": "John",
-      "d": "Judas",
-      "e": "Thomas"
-    },
-    "answer": "a"
-  },
-  {
-    "question": "Who was the author of the book of Revelation?",
-    "options": {
-      "a": "Peter",
-      "b": "Paul",
-      "c": "John",
-      "d": "James",
-      "e": "Jude"
+      "a": "Timothy and Titus",
+      "b": "Barnabas and Silas",
+      "c": "Priscilla and Aquila",
+      "d": "Luke and Mark",
+      "e": "Chloe and Lydia"
     },
     "answer": "c"
   },
   {
-    "question": "Who was the author of the book of James?",
+    "id": 30,
+    "question": "How does Paul end Romans?",
     "options": {
-      "a": "Peter",
-      "b": "Paul",
-      "c": "John",
-      "d": "James",
-      "e": "Jude"
-    },
-    "answer": "d"
-  },
-  {
-    "question": "Who was the author of the book of Jude?",
-    "options": {
-      "a": "Peter",
-      "b": "Paul",
-      "c": "John",
-      "d": "James",
-      "e": "Jude"
-    },
-    "answer": "e"
-  },
-  {
-    "question": "Who was the author of the book of 1 Peter?",
-    "options": {
-      "a": "Peter",
-      "b": "Paul",
-      "c": "John",
-      "d": "James",
-      "e": "Jude"
-    },
-    "answer": "a"
-  },
-  {
-    "question": "Who was the author of the book of 2 Peter?",
-    "options": {
-      "a": "Peter",
-      "b": "Paul",
-      "c": "John",
-      "d": "James",
-      "e": "Jude"
-    },
-    "answer": "a"
-  },
-  {
-    "question": "Who was the author of the book of 1 John?",
-    "options": {
-      "a": "Peter",
-      "b": "Paul",
-      "c": "John",
-      "d": "James",
-      "e": "Jude"
-    },
-    "answer": "c"
-  },
-  {
-    "question": "Who was the author of the book of 2 John?",
-    "options": {
-      "a": "Peter",
-      "b": "Paul",
-      "c": "John",
-      "d": "James",
-      "e": "Jude"
-    },
-    "answer": "c"
-  },
-  {
-    "question": "Who was the author of the book of 3 John?",
-    "options": {
-      "a": "Peter",
-      "b": "Paul",
-      "c": "John",
-      "d": "James",
-      "e": "Jude"
-    },
-    "answer": "c"
-  },
-  {
-    "question": "Who was the author of the book of Hebrews?",
-    "options": {
-      "a": "Peter",
-      "b": "Paul",
-      "c": "Luke",
-      "d": "Unknown",
-      "e": "John"
-    },
-    "answer": "d"
-  },
-  {
-    "question": "Who was the author of the book of Acts?",
-    "options": {
-      "a": "Peter",
-      "b": "Paul",
-      "c": "Luke",
-      "d": "John",
-      "e": "Mark"
-    },
-    "answer": "c"
-  },
-  {
-    "question": "Who was the author of the book of Romans?",
-    "options": {
-      "a": "Peter",
-      "b": "Paul",
-      "c": "Luke",
-      "d": "John",
-      "e": "Mark"
-    },
-    "answer": "b"
-  },
-  {
-    "question": "Who was the author of the book of 1 Corinthians?",
-    "options": {
-      "a": "Peter",
-      "b": "Paul",
-      "c": "Luke",
-      "d": "John",
-      "e": "Mark"
-    },
-    "answer": "b"
-  },
-  {
-    "question": "Who was the author of the book of 2 Corinthians?",
-    "options": {
-      "a": "Peter",
-      "b": "Paul",
-      "c": "Luke",
-      "d": "John",
-      "e": "Mark"
-    },
-    "answer": "b"
-  },
-  {
-    "question": "Who was the author of the book of Galatians?",
-    "options": {
-      "a": "Peter",
-      "b": "Paul",
-      "c": "Luke",
-      "d": "John",
-      "e": "Mark"
-    },
-    "answer": "b"
-  },
-  {
-    "question": "Who was the author of the book of Ephesians?",
-    "options": {
-      "a": "Peter",
-      "b": "Paul",
-      "c": "Luke",
-      "d": "John",
-      "e": "Mark"
-    },
-    "answer": "b"
-  },
-  {
-    "question": "Who was the author of the book of Philippians?",
-    "options": {
-      "a": "Peter",
-      "b": "Paul",
-      "c": "Luke",
-      "d": "John",
-      "e": "Mark"
-    },
-    "answer": "b"
-  },
-  {
-    "question": "Who was the author of the book of Colossians?",
-    "options": {
-      "a": "Peter",
-      "b": "Paul",
-      "c": "Luke",
-      "d": "John",
-      "e": "Mark"
-    },
-    "answer": "b"
-  },
-  {
-    "question": "Who was the author of the book of 1 Thessalonians?",
-    "options": {
-      "a": "Peter",
-      "b": "Paul",
-      "c": "Luke",
-      "d": "John",
-      "e": "Mark"
-    },
-    "answer": "b"
-  },
-  {
-    "question": "Who was the author of the book of 2 Thessalonians?",
-    "options": {
-      "a": "Peter",
-      "b": "Paul",
-      "c": "Luke",
-      "d": "John",
-      "e": "Mark"
-    },
-    "answer": "b"
-  },
-  {
-    "question": "Who was the author of the book of 1 Timothy?",
-    "options": {
-      "a": "Peter",
-      "b": "Paul",
-      "c": "Luke",
-      "d": "John",
-      "e": "Mark"
-    },
-    "answer": "b"
-  },
-  {
-    "question": "Who was the author of the book of 2 Timothy?",
-    "options": {
-      "a": "Peter",
-      "b": "Paul",
-      "c": "Luke",
-      "d": "John",
-      "e": "Mark"
-    },
-    "answer": "b"
-  },
-  {
-    "question": "Who was the author of the book of Titus?",
-    "options": {
-      "a": "Peter",
-      "b": "Paul",
-      "c": "Luke",
-      "d": "John",
-      "e": "Mark"
-    },
-    "answer": "b"
-  },
-  {
-    "question": "Who was the author of the book of Philemon?",
-    "options": {
-      "a": "Peter",
-      "b": "Paul",
-      "c": "Luke",
-      "d": "John",
-      "e": "Mark"
-    },
-    "answer": "b"
-  },
-  {
-    "question": "Who is called the Good Shepherd?",
-    "options": {
-      "a": "Peter",
-      "b": "Paul",
-      "c": "Jesus",
-      "d": "John",
-      "e": "James"
-    },
-    "answer": "c"
-  },
-  {
-    "question": "Who is called the Light of the World?",
-    "options": {
-      "a": "Peter",
-      "b": "Paul",
-      "c": "John",
-      "d": "Jesus",
-      "e": "James"
-    },
-    "answer": "d"
-  },
-  {
-    "question": "Who is called the Bread of Life?",
-    "options": {
-      "a": "Peter",
-      "b": "Paul",
-      "c": "John",
-      "d": "Jesus",
-      "e": "James"
-    },
-    "answer": "d"
-  },
-  {
-    "question": "Who is called the Way, the Truth, and the Life?",
-    "options": {
-      "a": "Peter",
-      "b": "Paul",
-      "c": "John",
-      "d": "Jesus",
-      "e": "James"
-    },
-    "answer": "d"
-  },
-  {
-    "question": "Who is called the Alpha and Omega?",
-    "options": {
-      "a": "Peter",
-      "b": "Paul",
-      "c": "John",
-      "d": "Jesus",
-      "e": "James"
+      "a": "With a genealogy",
+      "b": "With a warning",
+      "c": "With a prayer request",
+      "d": "With a doxology",
+      "e": "With a parable"
     },
     "answer": "d"
   }

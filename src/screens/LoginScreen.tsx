@@ -21,7 +21,7 @@ import { useBranding } from '../utils/useBranding';
 const MotionBox = motion(Box);
 const MotionButton = motion(Button);
 
-const PASSCODE = '1234'; // Easy to customize
+const PASSCODE = 'Peniel2025'; // Easy to customize
 
 export default function LoginScreen({ onLogin, darkMode, onToggleDarkMode }: {
   onLogin: () => void,

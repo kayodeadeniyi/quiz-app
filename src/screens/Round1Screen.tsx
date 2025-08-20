@@ -23,8 +23,6 @@ import QuizAppBar from '../components/QuizAppBar';
 const MotionBox = motion(Box);
 const MotionButton = motion(Button);
 
-const PASSCODE = '1234';
-
 export default function Round1Screen({ onLogout, darkMode, onToggleDarkMode }: {
   onLogout: () => void,
   darkMode: boolean,
